@@ -1,16 +1,24 @@
 name: Docker Build And Publish
+
 on:
+  workflow_call:
+    inputs:
+      AWS_REGION:
+        required: true
+        type: string
+      AWS_ROLE_TO_ASSUME:
+        required: true
+        type: string
+      ECR_URI:
+        required: true
+        type: string
+      TAG_REF:
+        required: true
+        type: string
   release:
     types: 
       - published
-env:
-  AWS_REGION : "eu-central-1"
-  DEV_SUFFIX : "development"
-  STAG_SUFFIX : "staging"
-  PROD_SUFFIX : "production"
 
-  ECR_DEV: "360532638835.dkr.ecr.eu-central-1.amazonaws.com/ever-given-development/norns-weather-service"
-  
 # permission can be added at job level or workflow level    
 permissions:
   id-token: write
@@ -26,13 +34,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::360532638835:role/github-norns
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Set tag as env var
-        run: |
-          TAG_REF="${{ github.ref }}"
-          echo "TAG_REF=$TAG_REF" >> $GITHUB_ENV
+          role-to-assume: ${{ inputs.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ inputs.AWS_REGION }}
 
       - name: Build Docker image
         run: |
@@ -40,4 +43,4 @@ jobs:
 
       - name: Publish to AWS ECR
         run: |
-          docker push $ECR_URI:$TAG_REF
+          docker push ${{ ECR_URI }}:${{ TAG_REF }}
