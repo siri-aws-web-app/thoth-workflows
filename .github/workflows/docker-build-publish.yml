@@ -25,12 +25,6 @@ jobs:
       - name: Git clone the repository
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: ${{ inputs.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ inputs.AWS_REGION }}
-
       - name: Set tag as env var
         run: echo "TAG_REF=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
@@ -38,6 +32,12 @@ jobs:
         run: |
           docker build -t ${{ inputs.ECR_URI }}:$TAG_REF .
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ inputs.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ inputs.AWS_REGION }}
+          
       - name: Publish to AWS ECR
         run: |
           docker push ${{ inputs.ECR_URI }}:$TAG_REF
