@@ -15,9 +15,6 @@ on:
       TAG_REF:
         required: true
         type: string
-  release:
-    types: 
-      - published
 
 # permission can be added at job level or workflow level    
 permissions:
