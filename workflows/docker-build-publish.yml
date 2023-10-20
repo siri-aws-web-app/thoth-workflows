@@ -40,4 +40,4 @@ jobs:
 
       - name: Publish to AWS ECR
         run: |
-          docker push ${{ ECR_URI }}:${{ TAG_REF }}
+          docker push ${{ inputs.ECR_URI }}:$TAG_REF
