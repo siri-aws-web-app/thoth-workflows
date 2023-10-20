@@ -1,0 +1,7 @@
+{
+    "name": "Docker Build And Publish",
+    "description": "Siri Docker Build And Publish",
+    "filePatterns": [
+        "^Dockerfile"
+    ]
+}
