@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t norns-weather-service:$TAG_REF .
+          docker build -t ${{ inputs.ECR_URI }}:$TAG_REF .
 
       - name: Publish to AWS ECR
         run: |
