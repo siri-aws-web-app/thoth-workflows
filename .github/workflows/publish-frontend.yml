@@ -12,6 +12,9 @@ on:
       S3_URI:
         required: true
         type: string
+      ENVIRONMENT:
+        required: true
+        type: string
 
 # permission can be added at job level or workflow level    
 permissions:
@@ -37,7 +40,7 @@ jobs:
       - name: Build Step
         run: |
           npm install
-          npm run build
+          npm run build -- --env=${{ inputs.ENVIRONMENT }}
 
       - name: Publish to S3
         run: |
