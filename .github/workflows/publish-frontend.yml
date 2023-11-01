@@ -40,7 +40,7 @@ jobs:
       - name: Build Step
         run: |
           npm install
-          npm run build -- --env=${{ inputs.ENVIRONMENT }}
+          npm run build -- --mode ${{ inputs.ENVIRONMENT }}
 
       - name: Publish to S3
         run: |
